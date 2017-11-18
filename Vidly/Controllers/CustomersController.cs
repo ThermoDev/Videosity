@@ -11,38 +11,33 @@ namespace Videosity.Controllers
 {
     public class CustomersController : Controller
     {
-       
+        private ApplicationDbContext _context;
+        
+        // Constructor
+        public CustomersController() {
+            _context = new ApplicationDbContext();
+        }
+
+        // Dispose of the _context
+        protected override void Dispose(bool disposing) {
+            _context.Dispose();
+        }
+
+
         // GET: Customers
         public ActionResult Index()
         {
-            var indexCustomers = getIndexcustomers();
+            var IndexCustomers = new IndexCustomerViewModel() {
+                Customers = _context.Customers.ToList()
+            };
 
-
-            var customers = new IndexCustomerViewModel() {};
-
-            return View(customers);
+            return View(IndexCustomers);
         }
 
         [Route("customers/details/{id}")]
         public ActionResult SpecificCustomer(int id) {
-            return View(getIndexcustomers().Customers[id]);
+            return View(_context.Customers.SingleOrDefault(c => c.Id == id));
         }
 
-
-        public IndexCustomerViewModel getIndexcustomers() {
-
-            //var customerOne = new Customer() { Name = "Shrek Winfley" };
-            //var customerTwo = new Customer() { Name = "Jensen Ackles" };
-
-            var customers = new List<Customer>() {
-                    new Customer {Id=0, Name = "Shrek Winfley" },
-                    new Customer {Id=1, Name = "Jensen Ackles" }
-            };
-
-            var indexCustomers = new IndexCustomerViewModel() {
-                Customers = customers
-            };
-            return indexCustomers;
-        }
     }
 }
