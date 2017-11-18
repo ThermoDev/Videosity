@@ -1,0 +1,28 @@
+﻿
+@model Videosity.ViewModels.RandomMovieViewModel
+
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if(Model.Customers.Count == 0) {
+    <p>No one has rented this movie before.</p>
+}
+
+@{ 
+    var className = Model.Customers.Count > 1 ? "popular" : null;
+}
+<h2 class="@className">@Model.Movie.Name</h2>
+
+
+<ul>
+
+    @foreach (var customer in Model.Customers) {
+        <li>
+            @customer.Name
+        </li>
+    }
+
+</ul>

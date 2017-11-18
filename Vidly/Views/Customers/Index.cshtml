@@ -1,0 +1,28 @@
+﻿@model Videosity.ViewModels.IndexCustomerViewModel
+  
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+@if (Model.Customers != null && Model.Customers.Count > 0) {
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Customers</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var customer in Model.Customers) {
+            <tr>
+                <td>@Html.ActionLink(customer.Name, customer.Id + "", "Customers/Details")</td>
+                
+            </tr>
+        }
+    </tbody>
+    </table>
+}else{ 
+    <p><i><strong>No Customers Found</strong></i></p>
+}
