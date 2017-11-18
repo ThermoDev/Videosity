@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 using Videosity.Models;
 using Videosity.ViewModels;
@@ -28,7 +29,8 @@ namespace Videosity.Controllers
         public ActionResult Index()
         {
             var IndexCustomers = new IndexCustomerViewModel() {
-                Customers = _context.Customers.ToList()
+                // Customers is set to the list of customers found in the context, including the customers membership type.
+                Customers = _context.Customers.Include(c => c.MembershipType).ToList()
             };
 
             return View(IndexCustomers);
