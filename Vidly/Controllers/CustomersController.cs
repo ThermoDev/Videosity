@@ -36,9 +36,10 @@ namespace Videosity.Controllers
             return View(IndexCustomers);
         }
 
+        // GET: Customers/Details/<id>
         [Route("customers/details/{id}")]
         public ActionResult SpecificCustomer(int id) {
-            return View(_context.Customers.SingleOrDefault(c => c.Id == id));
+            return View(_context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id));
         }
 
     }
