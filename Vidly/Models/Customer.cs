@@ -12,6 +12,7 @@ namespace Videosity.Models {
         [StringLength(255)]
         public string Name { get; set; }
         public bool isSubscribed { get; set; }
+        public DateTime? BirthDate { get; set; }
         // Navigation property
         public MembershipType MembershipType { get; set; }
         public byte MembershipTypeId { get; set; }
