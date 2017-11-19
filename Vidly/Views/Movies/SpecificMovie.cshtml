@@ -1,0 +1,15 @@
+﻿@using Videosity.Models;
+
+@{
+    ViewBag.Title = "SpecificMovie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+<ul>
+    <li><strong>Genre: </strong>@Model.Genre.Name</li>
+    <li><strong>Release Date: </strong>@Model.ReleaseDate.ToShortDateString()</li>
+    <li><strong>Date Added: </strong>@Model.DateAdded.ToShortDateString()</li>
+    <li><strong>Number in Stock: </strong>@Model.NumberInStock</li>
+
+</ul>

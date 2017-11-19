@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Data.Entity;
 
 using Videosity.Models;
 using Videosity.ViewModels;
@@ -12,19 +13,31 @@ namespace Videosity.Controllers
 {
     public class MoviesController : Controller
     {
+        private ApplicationDbContext _context;
+
+        // Constructor
+        public MoviesController() {
+            _context = new ApplicationDbContext();
+        }
+
+        // Dispose of the _context
+        protected override void Dispose(bool disposing) {
+            _context.Dispose();
+        }
+
+
         //GET: Movies/
         public ActionResult Index() {
-            var movies = new List<Movie>() {
-                new Movie () {Name="Shrek"},
-                new Movie () {Name="The Matrix"},
-                new Movie () {Name="Lord of the Rings: Fellowship of the Ring"}
-            };
-
             var movieModel = new IndexMovieViewModel() {
-                Movies = movies
+                Movies = _context.Movies.Include(m => m.Genre).ToList()
             };
 
             return View(movieModel);
+        }
+
+        [Route("movies/{id}") ]
+        public ActionResult SpecificMovie(int id) {
+            return View(_context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.Id == id));
         }
 
         // GET: Movies/Random
