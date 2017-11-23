@@ -25,6 +25,53 @@ namespace Videosity.Controllers
             _context.Dispose();
         }
 
+        public ActionResult New() {
+            var genres = _context.Genres.ToList();
+            var newMovieViewModel = new MovieFormViewModel {
+                Genres = genres
+            };
+
+            ViewBag.Message = "New Movie";
+
+            return View("MovieForm", newMovieViewModel);
+        }
+
+        public ActionResult Edit(int id) {
+            var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
+
+            if (movie == null) {
+                return HttpNotFound();
+            }
+
+            var viewModel = new MovieFormViewModel {
+                Movie = movie,
+                Genres = _context.Genres.ToList()
+            };
+
+            ViewBag.Message = "Edit Movie";
+            return View("MovieForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Movie movie) {
+
+            if (movie.Id == 0) {
+                movie.DateAdded = DateTime.Now;
+                _context.Movies.Add(movie);
+            }
+            else {
+                var movieToUpdate = _context.Movies.Single(c => c.Id == movie.Id);
+
+                movieToUpdate.Id = movie.Id;
+                movieToUpdate.Name = movie.Name;
+                movieToUpdate.ReleaseDate = movie.ReleaseDate;
+                movieToUpdate.GenreId = movie.GenreId;
+                movieToUpdate.NumberInStock = movie.NumberInStock;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Movies");
+        }
+
 
         //GET: Movies/
         public ActionResult Index() {
@@ -35,7 +82,7 @@ namespace Videosity.Controllers
             return View(movieModel);
         }
 
-        [Route("movies/{id}") ]
+        [Route("movies/Specific/{id}") ]
         public ActionResult SpecificMovie(int id) {
             return View(_context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.Id == id));
         }
@@ -61,5 +108,8 @@ namespace Videosity.Controllers
         public ActionResult ByReleaseDate(int year, int month) {
             return Content(year + "/" + month);
         }
+
+
+      
     }
 }

@@ -5,6 +5,7 @@
 }
 
 <h2>Movies</h2>
+@Html.ActionLink("New Movie", "New", new { controller = "Movies" }, new { @class = "btn btn-primary" })
 
 @if (Model.Movies != null && Model.Movies.Count > 0) {
     <table class="table table-bordered table-hover">
@@ -12,14 +13,22 @@
             <tr>
                 <th>Movie</th>
                 <th>Genre</th>
+                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
 
             @foreach (var movie in Model.Movies) {
                 <tr>
-                    <td>@Html.ActionLink(movie.Name, movie.Id + "", "Movies")</td>
+                    <td>@Html.ActionLink(movie.Name, movie.Id.ToString(), "Movies/Specific")</td>
                     <td>@movie.Genre.Name</td>
+                    <td>
+                        <a href="@Url.Action("Edit/" + movie.Id.ToString(), "Movies")" class="btn btn-primary">
+                           Edit
+                            <span class='glyphicon glyphicon - align - left' aria-hidden='true'></span>
+                        </a>
+
+                    </td> 
                 </tr>
             }
         </tbody>

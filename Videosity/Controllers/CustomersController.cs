@@ -49,8 +49,6 @@ namespace Videosity.Controllers
                 //TryUpdateModel(customerToUpdate);
             }
 
-
-
             _context.SaveChanges();
             return RedirectToAction("Index", "Customers");
         }
