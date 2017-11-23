@@ -26,16 +26,31 @@ namespace Videosity.Controllers
 
         public ActionResult New() {
             var membershipTypes = _context.MembershipTypes.ToList();
-            var newCustomerViewModel = new NewCustomerViewModel{
+            var newCustomerViewModel = new CustomerFormViewModel{
                 MembershipTypes = membershipTypes
             };
 
-            return View(newCustomerViewModel);
+            return View("CustomerForm", newCustomerViewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(Customer customer) {
-            _context.Customers.Add(customer);
+        public ActionResult Save(Customer customer) {
+            if (customer.Id == 0) {
+                _context.Customers.Add(customer);
+            }else {
+                var customerToUpdate = _context.Customers.Single(c => c.Id == customer.Id);
+
+                customerToUpdate.Name = customer.Name;
+                customerToUpdate.BirthDate = customer.BirthDate;
+                customerToUpdate.MembershipTypeId = customer.MembershipTypeId;
+                customerToUpdate.IsSubscribed = customer.IsSubscribed;
+
+                /* The property of the customer is updated using key:value pairs. */
+                //TryUpdateModel(customerToUpdate);
+            }
+
+
+
             _context.SaveChanges();
             return RedirectToAction("Index", "Customers");
         }
@@ -55,6 +70,21 @@ namespace Videosity.Controllers
         [Route("customers/details/{id}")]
         public ActionResult SpecificCustomer(int id) {
             return View(_context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id));
+        }
+
+        public ActionResult Edit (int id) {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+
+            if(customer == null) {
+                return HttpNotFound();
+            }
+
+            var viewModel = new CustomerFormViewModel {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+            return View("CustomerForm", viewModel);
         }
 
     }
