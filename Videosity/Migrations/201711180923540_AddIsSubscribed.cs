@@ -7,12 +7,12 @@ namespace Videosity.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Customers", "isSubscribed", c => c.Boolean(nullable: false));
+            AddColumn("dbo.Customers", "IsSubscribed", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Customers", "isSubscribed");
+            DropColumn("dbo.Customers", "IsSubscribed");
         }
     }
 }

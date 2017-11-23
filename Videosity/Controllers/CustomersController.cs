@@ -24,6 +24,14 @@ namespace Videosity.Controllers
             _context.Dispose();
         }
 
+        public ActionResult New() {
+            var membershipTypes = _context.MembershipTypes.ToList();
+            var newCustomerViewModel = new NewCustomerViewModel{
+                MembershipTypes = membershipTypes
+            };
+
+            return View(newCustomerViewModel);
+        }
 
         // GET: Customers
         public ActionResult Index()
