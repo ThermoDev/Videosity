@@ -27,6 +27,7 @@ namespace Videosity.Controllers
         public ActionResult New() {
             var membershipTypes = _context.MembershipTypes.ToList();
             var newCustomerViewModel = new CustomerFormViewModel{
+                Customer = new Customer(),
                 MembershipTypes = membershipTypes
             };
 
