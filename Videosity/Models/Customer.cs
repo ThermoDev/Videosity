@@ -17,6 +17,7 @@ namespace Videosity.Models {
         public bool IsSubscribed { get; set; }
 
         [Display(Name="Date of Birth")]
+        [Min18YearsIfMember]
         public DateTime? BirthDate { get; set; }
 
         // Navigation properties
