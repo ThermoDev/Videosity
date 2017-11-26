@@ -35,20 +35,31 @@ namespace Videosity.Controllers
 
         [HttpPost]
         public ActionResult Save(Customer customer) {
-            if (customer.Id == 0) {
-                _context.Customers.Add(customer);
-            }else {
-                var customerToUpdate = _context.Customers.Single(c => c.Id == customer.Id);
+            // Use ModelState.IsValid to change the flow of the program,
+            // and return the same view if the form submitted is not valid.
+            if (!ModelState.IsValid) {
 
-                customerToUpdate.Name = customer.Name;
-                customerToUpdate.BirthDate = customer.BirthDate;
-                customerToUpdate.MembershipTypeId = customer.MembershipTypeId;
-                customerToUpdate.IsSubscribed = customer.IsSubscribed;
+                var viewModel = new CustomerFormViewModel {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
 
-                /* The property of the customer is updated using key:value pairs. */
-                //TryUpdateModel(customerToUpdate);
+                return View("CustomerForm", viewModel);
             }
+                if (customer.Id == 0) {
+                    _context.Customers.Add(customer);
+                }
+                else {
+                    var customerToUpdate = _context.Customers.Single(c => c.Id == customer.Id);
 
+                    customerToUpdate.Name = customer.Name;
+                    customerToUpdate.BirthDate = customer.BirthDate;
+                    customerToUpdate.MembershipTypeId = customer.MembershipTypeId;
+                    customerToUpdate.IsSubscribed = customer.IsSubscribed;
+
+                    /* The property of the customer is updated using key:value pairs. */
+                    //TryUpdateModel(customerToUpdate);
+                }
             _context.SaveChanges();
             return RedirectToAction("Index", "Customers");
         }
