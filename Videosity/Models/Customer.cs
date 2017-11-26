@@ -10,7 +10,7 @@ namespace Videosity.Models {
 
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Please enter a Customer Name.")]
         [StringLength(255)]
         public string Name { get; set; }
 
