@@ -35,6 +35,7 @@ namespace Videosity.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer) {
             // Use ModelState.IsValid to change the flow of the program,
             // and return the same view if the form submitted is not valid.
