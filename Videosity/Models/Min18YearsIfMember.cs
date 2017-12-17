@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Videosity.Models {
     public class Min18YearsIfMember : ValidationAttribute {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
-            var customer = (Customer)validationContext.ObjectInstance;
+            var customer = (Customer) validationContext.ObjectInstance;
 
             // If the customer has PAYG
             if(customer.MembershipTypeId == MembershipType.Unknown || customer.MembershipTypeId == MembershipType.PayAsYouGo) {
